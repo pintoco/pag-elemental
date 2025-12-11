@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Elemental Pro SPA ofrece soluciones integrales en CCTV, redes y tecnologías de la información para empresas y municipalidades.">
   <title>Elemental Pro SPA | Soluciones Tecnológicas</title>
   <!-- Fuente principal -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -49,6 +50,10 @@
       transition: all 0.25s ease;
       cursor: pointer;
       border: 2px solid transparent;
+    }
+    .btn:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(255, 152, 0, 0.5);
+      outline-offset: 2px;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -369,6 +374,15 @@
        ======================== */
     .reveal { opacity: 0; transform: translateY(22px); transition: all 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+    section { scroll-margin-top: 90px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
     /* ========================
        Responsive
        ======================== */
@@ -387,7 +401,7 @@
   <header id="header">
     <div class="container nav">
       <div class="logo">Elemental Pro <span>SPA</span></div>
-      <nav>
+      <nav aria-label="Navegación principal">
         <ul>
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#servicios">Servicios</a></li>
@@ -608,7 +622,7 @@
       <div class="reveal">
         <h2 class="section-title">Contacto</h2>
         <p class="section-subtitle">Cuéntanos sobre tu proyecto y te enviaremos una propuesta.</p>
-        <form id="contactForm">
+        <form id="contactForm" class="card reveal" aria-label="Formulario de contacto">
           <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" required placeholder="Tu nombre">
@@ -638,7 +652,7 @@
             <textarea id="mensaje" required placeholder="Describe tu requerimiento"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Enviar solicitud</button>
-          <div id="formSuccess" class="success-message">Hemos recibido tu solicitud, te contactaremos a la brevedad.</div>
+          <div id="formSuccess" class="success-message" role="status" aria-live="polite">Hemos recibido tu solicitud, te contactaremos a la brevedad.</div>
         </form>
       </div>
       <div class="card reveal">
