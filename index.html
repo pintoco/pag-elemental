@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Elemental Pro SPA ofrece soluciones integrales en CCTV, redes y tecnologías de la información para empresas y municipalidades.">
   <title>Elemental Pro SPA | Soluciones Tecnológicas</title>
   <!-- Fuente principal -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,6 +51,10 @@
       cursor: pointer;
       border: 2px solid transparent;
     }
+    .btn:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(255, 152, 0, 0.5);
+      outline-offset: 2px;
+    }
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #fff;
@@ -83,6 +88,18 @@
       justify-content: space-between;
       padding: 18px 0;
     }
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .menu-toggle:hover { background: rgba(255, 255, 255, 0.12); }
     .nav.scrolled {
       background: rgba(13, 71, 161, 0.9);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
@@ -111,6 +128,7 @@
       gap: 18px;
       align-items: center;
     }
+    nav { position: relative; }
     nav a {
       color: #e5e7eb;
       font-weight: 500;
@@ -369,11 +387,35 @@
        ======================== */
     .reveal { opacity: 0; transform: translateY(22px); transition: all 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+    section { scroll-margin-top: 90px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
     /* ========================
        Responsive
        ======================== */
     @media (max-width: 900px) {
-      nav ul { display: none; }
+      .menu-toggle { display: inline-block; }
+      nav ul {
+        position: absolute;
+        right: 4%;
+        top: 68px;
+        display: none;
+        background: rgba(13, 71, 161, 0.96);
+        box-shadow: var(--shadow);
+        padding: 14px;
+        border-radius: 12px;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 220px;
+      }
+      nav ul.show { display: flex; }
+      nav a { width: 100%; display: block; }
       .nav.scrolled .logo { color: #fff; }
     }
     @media (max-width: 600px) {
@@ -387,7 +429,10 @@
   <header id="header">
     <div class="container nav">
       <div class="logo">Elemental Pro <span>SPA</span></div>
-      <nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        ☰
+      </button>
+      <nav id="mainNav" aria-label="Navegación principal">
         <ul>
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#servicios">Servicios</a></li>
@@ -608,7 +653,7 @@
       <div class="reveal">
         <h2 class="section-title">Contacto</h2>
         <p class="section-subtitle">Cuéntanos sobre tu proyecto y te enviaremos una propuesta.</p>
-        <form id="contactForm">
+        <form id="contactForm" class="card reveal" aria-label="Formulario de contacto">
           <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" required placeholder="Tu nombre">
@@ -638,10 +683,11 @@
             <textarea id="mensaje" required placeholder="Describe tu requerimiento"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Enviar solicitud</button>
-          <div id="formSuccess" class="success-message">Hemos recibido tu solicitud, te contactaremos a la brevedad.</div>
+          <div id="formSuccess" class="success-message" role="status" aria-live="polite">Hemos recibido tu solicitud, te contactaremos a la brevedad.</div>
         </form>
       </div>
       <div class="card reveal">
+        <!-- Datos de contacto editables -->
         <h3>Datos de contacto</h3>
         <p>Actualiza estos datos según tus necesidades.</p>
         <ul class="about-points" style="margin-top:12px;">
@@ -687,6 +733,19 @@
         }
       });
     });
+
+    // Menú responsive simple
+    const menuToggle = document.getElementById('menuToggle');
+    const navList = document.querySelector('nav ul');
+    const toggleMenu = () => {
+      const isOpen = navList.classList.toggle('show');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    };
+    menuToggle.addEventListener('click', toggleMenu);
+    navList.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navList.classList.remove('show');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }));
 
     // Sombra y fondo al hacer scroll en el header
     const header = document.getElementById('header');
