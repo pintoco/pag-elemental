@@ -17,6 +17,10 @@ function assert(condition, message) {
   assert(new RegExp(`id=["']${id}["']`).test(html), `Falta la sección con id="${id}"`);
 });
 
+// Detect Git conflict markers early to avoid broken pages
+const conflictPattern = /^<<<<<<<|^=======|^>>>>>>>/m;
+assert(!conflictPattern.test(html), 'Se detectaron marcadores de conflicto de Git en index.html. Resuelve el conflicto.');
+
 // Basic contact form field checks
 const formFields = [
   { id: 'nombre', label: 'Nombre' },
