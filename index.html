@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elemental Pro SPA | Soluciones Tecnológicas</title>
+  <!-- Fuente principal -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========================
+       Variables y estilos base
+       ======================== */
+    :root {
+      --primary: #0d47a1;
+      --primary-dark: #0a367c;
+      --secondary: #1e293b;
+      --accent: #ff9800;
+      --bg: #f5f7fb;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    section { padding: 90px 0; }
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-outline {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #fff;
+    }
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    /* ========================
+       Header y navegación fija
+       ======================== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+    .nav.scrolled {
+      background: rgba(13, 71, 161, 0.9);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      padding: 12px 0;
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #0b1a33;
+      font-size: 0.85rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    nav a {
+      color: #e5e7eb;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    nav a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+    .cta-nav {
+      background: var(--accent);
+      color: #0b1a33;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    /* ========================
+       Hero
+       ======================== */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: grid;
+      place-items: center;
+      padding-top: 120px;
+      color: #fff;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 152, 0, 0.12), transparent 35%), linear-gradient(135deg, #0a2b6d, #0f3d8a, #0b1f45);
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 180%;
+      height: 140%;
+      top: -20%;
+      left: -40%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.4;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw + 0.5rem, 3rem);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .hero p {
+      color: #cdd7e5;
+      margin-bottom: 24px;
+      font-size: 1.05rem;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h3 { margin-bottom: 10px; color: #fff; }
+    .hero-card ul { color: #dbeafe; list-style: disc; margin-left: 18px; }
+    /* ========================
+       Secciones genéricas
+       ======================== */
+    .section-title {
+      text-align: center;
+      margin-bottom: 16px;
+      font-size: 2rem;
+      color: var(--secondary);
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 42px;
+    }
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e5e7eb;
+    }
+    /* ========================
+       Servicios
+       ======================== */
+    .services-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .service-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(13, 71, 161, 0.1);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .service-card h3 { margin-bottom: 8px; color: var(--secondary); }
+    .service-card ul {
+      margin-left: 16px;
+      color: var(--muted);
+      list-style: disc;
+    }
+    /* ========================
+       Nosotros
+       ======================== */
+    .about {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      align-items: center;
+    }
+    .about-points {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .about-points li {
+      background: #e8eef8;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--secondary);
+      font-weight: 500;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .stat {
+      background: #0f3d8a;
+      color: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .stat strong { display: block; font-size: 1.6rem; margin-bottom: 6px; }
+    /* ========================
+       Proyectos
+       ======================== */
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: rgba(13, 71, 161, 0.12);
+      color: var(--primary);
+      font-weight: 600;
+      margin-right: 8px;
+      margin-top: 6px;
+      font-size: 0.85rem;
+    }
+    /* ========================
+       Clientes
+       ======================== */
+    .clients {
+      background: linear-gradient(135deg, #e2e8f0, #f5f7fb);
+    }
+    .clients-grid {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      text-align: center;
+    }
+    .client-box {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px 12px;
+      font-weight: 700;
+      color: var(--secondary);
+      box-shadow: var(--shadow);
+    }
+    /* ========================
+       Contacto
+       ======================== */
+    .contact {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    form {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e5e7eb;
+    }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--secondary); }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-family: inherit;
+      transition: border-color 0.2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .success-message {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #def7ec;
+      color: #047857;
+      display: none;
+    }
+    /* ========================
+       Footer
+       ======================== */
+    footer {
+      background: #0b1f45;
+      color: #d1d5db;
+      padding: 28px 0;
+    }
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      align-items: center;
+    }
+    .footer-links a {
+      color: #dbeafe;
+      margin-right: 12px;
+      display: inline-block;
+      padding: 6px 0;
+    }
+    .to-top {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    /* ========================
+       Animaciones y utilidades
+       ======================== */
+    .reveal { opacity: 0; transform: translateY(22px); transition: all 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* ========================
+       Responsive
+       ======================== */
+    @media (max-width: 900px) {
+      nav ul { display: none; }
+      .nav.scrolled .logo { color: #fff; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 0; }
+      .hero { min-height: 80vh; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header fijo con navegación -->
+  <header id="header">
+    <div class="container nav">
+      <div class="logo">Elemental Pro <span>SPA</span></div>
+      <nav>
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#clientes">Clientes</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a class="cta-nav" href="#contacto">Solicitar cotización</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / Inicio -->
+  <section id="inicio" class="hero">
+    <div class="container hero-grid">
+      <div class="reveal">
+        <h1>Soluciones integrales en CCTV, redes y TI</h1>
+        <p>Diseñamos, instalamos y mantenemos infraestructuras tecnológicas confiables para tu organización, orientados a empresas y municipalidades.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#servicios">Ver servicios</a>
+          <a class="btn btn-outline" href="#contacto">Contactar ahora</a>
+        </div>
+      </div>
+      <div class="hero-card reveal">
+        <h3>Infraestructura segura y disponible</h3>
+        <ul>
+          <li>Planes de continuidad operacional</li>
+          <li>Monitoreo y soporte especializado</li>
+          <li>Integración de CCTV, datos y fibra óptica</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios">
+    <div class="container">
+      <h2 class="section-title reveal">Servicios</h2>
+      <p class="section-subtitle reveal">Soluciones llave en mano en CCTV, redes, servidores y soporte TI.</p>
+      <div class="grid services-grid">
+        <div class="card service-card reveal">
+          <div class="service-icon">🎯</div>
+          <h3>CCTV y Televigilancia</h3>
+          <ul>
+            <li>Diseño de proyectos de videovigilancia.</li>
+            <li>Instalación de cámaras IP/analógicas y NVR.</li>
+            <li>Monitoreo y mantención preventiva/correctiva.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🖥️</div>
+          <h3>Instalación y configuración de servidores</h3>
+          <ul>
+            <li>Servidores físicos y virtualización.</li>
+            <li>Microsoft / VMware / Linux.</li>
+            <li>Hardening básico y buenas prácticas.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🧩</div>
+          <h3>Cableado estructurado</h3>
+          <ul>
+            <li>Diseño de redes de datos bajo normativa.</li>
+            <li>Instalación de racks, patch panels y canalizaciones.</li>
+            <li>Certificación básica de puntos de red.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🔦</div>
+          <h3>Fibra óptica</h3>
+          <ul>
+            <li>Tendido, fusión y medición.</li>
+            <li>Troncales de fibra para CCTV y datos.</li>
+            <li>Diagnóstico y reparación de enlaces.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🛠️</div>
+          <h3>Soluciones TI y Soporte</h3>
+          <ul>
+            <li>Soporte a usuarios.</li>
+            <li>Configuración de redes LAN/WiFi.</li>
+            <li>Administración básica de servicios en la nube.</li>
+          </ul>
+        </div>
+        <!-- Tarjetas extra -->
+        <div class="card service-card reveal">
+          <div class="service-icon">📄</div>
+          <h3>Contratos de mantención</h3>
+          <ul>
+            <li>Programas para CCTV y redes.</li>
+            <li>Visitas programadas y correctivas.</li>
+            <li>Reportes de estado y recomendaciones.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">📡</div>
+          <h3>Redes inalámbricas PtP / PtMP</h3>
+          <ul>
+            <li>Enlaces de alto rendimiento.</li>
+            <li>Topologías redundantes.</li>
+            <li>Alineación y pruebas de throughput.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🔐</div>
+          <h3>Control de acceso y seguridad electrónica</h3>
+          <ul>
+            <li>Controladores, chapas y biometría.</li>
+            <li>Integración con CCTV.</li>
+            <li>Alertas y registros centralizados.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🧭</div>
+          <h3>Consultoría tecnológica y diseño TI</h3>
+          <ul>
+            <li>Evaluación de infraestructura.</li>
+            <li>Roadmap de modernización.</li>
+            <li>Documentación y estándares.</li>
+          </ul>
+        </div>
+        <div class="card service-card reveal">
+          <div class="service-icon">🛡️</div>
+          <h3>Ciberseguridad básica para pymes</h3>
+          <ul>
+            <li>Firewall y segmentación.</li>
+            <li>Buenas prácticas y backups.</li>
+            <li>Respuesta inicial a incidentes.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nosotros -->
+  <section id="nosotros">
+    <div class="container about">
+      <div class="reveal">
+        <h2 class="section-title">Nosotros</h2>
+        <p class="section-subtitle">Elemental Pro SPA es una empresa especializada en CCTV, redes, fibra óptica y soluciones TI, entregando proyectos robustos para el sector público y privado.</p>
+        <ul class="about-points">
+          <li>Experiencia en continuidad operacional y seguridad.</li>
+          <li>Soporte personalizado y remoto/terreno.</li>
+          <li>Proyectos para empresas, municipalidades y educación.</li>
+          <li>Enfoque en diseños escalables y documentados.</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="stats">
+          <div class="stat">
+            <strong>10+</strong>
+            <span>Años de experiencia</span>
+          </div>
+          <div class="stat">
+            <strong>150+</strong>
+            <span>Proyectos realizados</span>
+          </div>
+          <div class="stat">
+            <strong>90+</strong>
+            <span>Clientes atendidos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proyectos -->
+  <section id="proyectos">
+    <div class="container">
+      <h2 class="section-title reveal">Proyectos / Casos de éxito</h2>
+      <p class="section-subtitle reveal">Ejemplos de proyectos implementados para distintos sectores.</p>
+      <div class="grid projects-grid">
+        <div class="card reveal">
+          <h3>Implementación de red CCTV para municipalidad</h3>
+          <p class="section-subtitle">Diseño e instalación de cámaras IP, centro de monitoreo y enlaces de respaldo.</p>
+          <div class="badge">CCTV</div><div class="badge">Redes</div><div class="badge">Municipalidad</div>
+        </div>
+        <div class="card reveal">
+          <h3>Instalación de servidores y red de datos para empresa privada</h3>
+          <p class="section-subtitle">Cluster de virtualización, cableado estructurado y segmentación de red segura.</p>
+          <div class="badge">Servidores</div><div class="badge">Cableado</div><div class="badge">TI</div>
+        </div>
+        <div class="card reveal">
+          <h3>Enlace inalámbrico y fibra óptica para cámaras urbanas</h3>
+          <p class="section-subtitle">Troncales de fibra y enlaces PtP para cobertura de seguridad ciudadana.</p>
+          <div class="badge">Fibra</div><div class="badge">Inalámbrico</div><div class="badge">CCTV</div>
+        </div>
+        <div class="card reveal">
+          <h3>Control de acceso integrado con videovigilancia</h3>
+          <p class="section-subtitle">Implementación de acceso biométrico, CCTV y monitoreo centralizado.</p>
+          <div class="badge">Control de acceso</div><div class="badge">CCTV</div><div class="badge">Seguridad</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clientes -->
+  <section id="clientes" class="clients">
+    <div class="container">
+      <h2 class="section-title reveal">Clientes</h2>
+      <p class="section-subtitle reveal">Organizaciones públicas y privadas confían en nosotros para proteger y mantener su operación.</p>
+      <div class="grid clients-grid">
+        <div class="client-box reveal">Cliente 1</div>
+        <div class="client-box reveal">Cliente 2</div>
+        <div class="client-box reveal">Cliente 3</div>
+        <div class="client-box reveal">Cliente 4</div>
+        <div class="client-box reveal">Cliente 5</div>
+        <div class="client-box reveal">Cliente 6</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div class="container contact">
+      <div class="reveal">
+        <h2 class="section-title">Contacto</h2>
+        <p class="section-subtitle">Cuéntanos sobre tu proyecto y te enviaremos una propuesta.</p>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" required placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" required placeholder="tu@empresa.com">
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" required placeholder="+56 9 1234 5678">
+          </div>
+          <div class="form-group">
+            <label for="servicio">Tipo de servicio</label>
+            <select id="servicio" required>
+              <option value="">Selecciona una opción</option>
+              <option>CCTV</option>
+              <option>Servidores</option>
+              <option>Cableado estructurado</option>
+              <option>Fibra óptica</option>
+              <option>Soluciones TI</option>
+              <option>Otros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" required placeholder="Describe tu requerimiento"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+          <div id="formSuccess" class="success-message">Hemos recibido tu solicitud, te contactaremos a la brevedad.</div>
+        </form>
+      </div>
+      <div class="card reveal">
+        <h3>Datos de contacto</h3>
+        <p>Actualiza estos datos según tus necesidades.</p>
+        <ul class="about-points" style="margin-top:12px;">
+          <li>Correo: contacto@elementalpro.cl</li>
+          <li>Teléfono: +56 9 8765 4321</li>
+          <li>Dirección: Santiago, Chile</li>
+          <li>Horario: Lunes a viernes, 09:00 - 18:00</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <div>
+        <strong>Elemental Pro SPA</strong>
+        <p>Todos los derechos reservados.</p>
+      </div>
+      <div>
+        <p>Correo: contacto@elementalpro.cl</p>
+        <p>Teléfono: +56 9 8765 4321</p>
+      </div>
+      <div class="footer-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+      <div>
+        <a class="to-top" href="#inicio">Volver arriba ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll suave para navegación interna
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Sombra y fondo al hacer scroll en el header
+    const header = document.getElementById('header');
+    const toggleHeader = () => {
+      if (window.scrollY > 40) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', toggleHeader);
+    toggleHeader();
+
+    // Animación de aparición con IntersectionObserver
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Validación básica del formulario
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('formSuccess');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const servicio = document.getElementById('servicio').value;
+      const mensaje = document.getElementById('mensaje').value.trim();
+
+      // Validaciones simples
+      const emailRegex = /^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,}$/;
+      if (!nombre || !correo || !telefono || !servicio || !mensaje) {
+        alert('Por favor completa todos los campos.');
+        return;
+      }
+      if (!emailRegex.test(correo)) {
+        alert('Por favor ingresa un correo válido.');
+        return;
+      }
+
+      // Simulación de envío exitoso
+      successMsg.style.display = 'block';
+      form.reset();
+      window.setTimeout(() => successMsg.scrollIntoView({ behavior: 'smooth' }), 100);
+    });
+  </script>
+</body>
+</html>
